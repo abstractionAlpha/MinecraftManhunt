@@ -59,6 +59,7 @@ public class MMGUIMain implements Listener {
 		if (hunters.size() != 0) {
 			smHunters.setOwningPlayer(hunters.get(0));
 		}
+		smHunters.setDisplayName("Hunters");
 		lore = new ArrayList<String>();
 		lore.add("Open Hunters Window");
 		smHunters.setLore(lore);
@@ -100,6 +101,9 @@ public class MMGUIMain implements Listener {
 		inv.setItem(ROW_LENGTH + 1, isRunners);
 		inv.setItem(ROW_LENGTH + 4, isHunters);
 		inv.setItem(ROW_LENGTH + 7, functional);
+		
+		// Open GUI
+		p.openInventory(inv);
 	}
 	
 	protected void check() {
