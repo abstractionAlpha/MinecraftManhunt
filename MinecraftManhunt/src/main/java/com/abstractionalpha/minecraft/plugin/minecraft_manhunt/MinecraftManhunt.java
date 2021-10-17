@@ -11,7 +11,7 @@ public class MinecraftManhunt extends JavaPlugin {
 	
 	@Override
 	public void onDisable() {
-		// TOD insert shutdown logic
+		// TODO insert shutdown logic
 	}
 
 }
