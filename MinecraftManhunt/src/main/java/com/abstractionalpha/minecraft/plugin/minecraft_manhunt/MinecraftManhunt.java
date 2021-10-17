@@ -6,7 +6,7 @@ public class MinecraftManhunt extends JavaPlugin {
 	
 	@Override
 	public void onEnable() {
-		// TODO insert startup logic
+		getServer().getPluginManager().registerEvents(new MMListener(), this);
 	}
 	
 	@Override
