@@ -1,8 +1,6 @@
 package com.abstractionalpha.minecraft.plugin.minecraft_manhunt.gui;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

@@ -7,6 +7,7 @@ public class MinecraftManhunt extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		getServer().getPluginManager().registerEvents(new MMListener(), this);
+		getCommand("manhunt").setExecutor(new MMCommandExecutor(this));
 	}
 	
 	@Override
