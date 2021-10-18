@@ -143,6 +143,7 @@ public class MMGUIMain implements Listener {
 	
 	// Event Handlers
 	
+	// InventoryClickEvent for main GUI
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent ice) {
 		// Get inventory and clicked item
