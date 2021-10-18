@@ -1,11 +1,14 @@
 package com.abstractionalpha.minecraft.plugin.minecraft_manhunt.gui;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -135,6 +138,38 @@ public class MMGUIMain implements Listener {
 			if (!plugin.getServer().getOnlinePlayers().contains(runner)) {
 				runners.remove(runner);
 			}
+		}
+	}
+	
+	// Event Handlers
+	
+	@EventHandler
+	public void onInventoryClick(InventoryClickEvent ice) {
+		// Get inventory and clicked item
+		Inventory inv = ice.getClickedInventory();
+		if (ice.getView().getTitle().equals("Manhunt")) {
+			ice.setCancelled(true);
+		} else {
+			return;
+		}
+		ItemStack is = ice.getCurrentItem();
+		
+		// Check if the clicked item matches any item lores
+		List<String> lore = is.getItemMeta().getLore();
+		switch (lore.get(0)) {
+		case "Open Runners Window":
+			// TODO add runners window
+			break;
+		case "Open Hunters Window":
+			// TODO add hunters window
+			break;
+		case "Click to verify your selections":
+			access((Player) ice.getWhoClicked(), false);
+			break;
+		case "Click to start":
+			// TODO add code to start game
+			// Probably method in main that will garbage collect this GUI
+			break;
 		}
 	}
 
