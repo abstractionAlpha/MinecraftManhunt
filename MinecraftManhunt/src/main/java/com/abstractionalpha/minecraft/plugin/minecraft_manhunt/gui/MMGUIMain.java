@@ -136,11 +136,11 @@ public class MMGUIMain implements Listener {
 		List<String> lore = is.getItemMeta().getLore();
 		switch (lore.get(0)) {
 		case "Open Runners Window":
-			// TODO add runners window
+			plugin.getServer().getPluginManager().registerEvents(new MMGUIRunner((Player) ice.getWhoClicked()), plugin);
 			inventoryClickSound((Player) ice.getWhoClicked(), ice.getWhoClicked().getLocation());
 			break;
 		case "Open Hunters Window":
-			// TODO add hunters window
+			plugin.getServer().getPluginManager().registerEvents(new MMGUIHunter((Player) ice.getWhoClicked()), plugin);
 			inventoryClickSound((Player) ice.getWhoClicked(), ice.getWhoClicked().getLocation());
 			break;
 		case "Click to verify your selections":
@@ -176,13 +176,32 @@ public class MMGUIMain implements Listener {
 		}
 		
 		private void access(Player p) {
-			
+			Inventory inv = Bukkit.createInventory(p, runners.size() / ROW_LENGTH + 1, "Manhunt / Runners");
+			for (int i = 0; i < runners.size(); i++) {
+				ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
+				SkullMeta meta = (SkullMeta) skull.getItemMeta();
+				meta.setOwningPlayer(runners.get(i));
+				meta.setDisplayName(runners.get(i).getDisplayName());
+				ArrayList<String> lore = new ArrayList<String>();
+				lore.add("Click to add as a hunter.");
+				meta.setLore(lore);
+				skull.setItemMeta(meta);
+				inv.setItem(i, skull);
+			}
+			ItemStack back = new ItemStack(Material.RED_TERRACOTTA);
+			ItemMeta meta = back.getItemMeta();
+			meta.setDisplayName("Back");
+			List<String> lore = meta.getLore();
+			lore.add("Click to go back to main menu.");
+			meta.setLore(lore);
+			back.setItemMeta(meta);
+			inv.setItem(inv.getSize() - 1, back);
+			p.openInventory(inv);
 		}
 		
 		@EventHandler
 		public void onInventoryClick(InventoryClickEvent ice) {
 			// Get inventory and clicked item
-			Inventory inv = ice.getClickedInventory();
 			if (ice.getView().getTitle().equals("Manhunt / Runners")) {
 				ice.setCancelled(true);
 			} else {
@@ -199,6 +218,66 @@ public class MMGUIMain implements Listener {
 					hunters.sort(null);
 				}
 				access((Player) ice.getWhoClicked());
+				inventoryClickSound((Player) ice.getWhoClicked(), ice.getWhoClicked().getLocation());
+			} else if (is.getType().equals(Material.RED_TERRACOTTA)) {
+				MMGUIMain.this.access((Player) ice.getWhoClicked(), true);
+				inventoryClickSound((Player) ice.getWhoClicked(), ice.getWhoClicked().getLocation());
+			}
+		}
+	}
+	
+	private class MMGUIHunter implements Listener {
+		
+		public MMGUIHunter(Player p) {
+			access(p);
+		}
+		
+		private void access(Player p) {
+			Inventory inv = Bukkit.createInventory(p, hunters.size() / ROW_LENGTH + 1, "Manhunt / Hunters");
+			for (int i = 0; i < hunters.size(); i++) {
+				ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
+				SkullMeta meta = (SkullMeta) skull.getItemMeta();
+				meta.setOwningPlayer(hunters.get(i));
+				meta.setDisplayName(hunters.get(i).getDisplayName());
+				ArrayList<String> lore = new ArrayList<String>();
+				lore.add("Click to add as a runner.");
+				meta.setLore(lore);
+				skull.setItemMeta(meta);
+				inv.setItem(i, skull);
+			}
+			ItemStack back = new ItemStack(Material.RED_TERRACOTTA);
+			ItemMeta meta = back.getItemMeta();
+			meta.setDisplayName("Back");
+			List<String> lore = meta.getLore();
+			lore.add("Click to go back to main menu.");
+			meta.setLore(lore);
+			back.setItemMeta(meta);
+			inv.setItem(inv.getSize() - 1, back);
+			p.openInventory(inv);
+		}
+		
+		@EventHandler
+		public void onInventoryClick(InventoryClickEvent ice) {
+			// Get inventory and clicked item
+			if (ice.getView().getTitle().equals("Manhunt / Hunters")) {
+				ice.setCancelled(true);
+			} else {
+				return;
+			}
+			ItemStack is = ice.getCurrentItem();
+			
+			if (is.getType().equals(Material.PLAYER_HEAD)) {
+				SkullMeta sm = (SkullMeta) is.getItemMeta();
+				Player player = (Player) sm.getOwningPlayer();
+				if (player.isOnline()) {
+					hunters.remove(player);
+					runners.add(player);
+					runners.sort(null);
+				}
+				access((Player) ice.getWhoClicked());
+				inventoryClickSound((Player) ice.getWhoClicked(), ice.getWhoClicked().getLocation());
+			} else if (is.getType().equals(Material.RED_TERRACOTTA)) {
+				MMGUIMain.this.access((Player) ice.getWhoClicked(), true);
 				inventoryClickSound((Player) ice.getWhoClicked(), ice.getWhoClicked().getLocation());
 			}
 		}
