@@ -28,15 +28,15 @@ public class MMGUIMain implements Listener {
 	public MMGUIMain(JavaPlugin plugin, Player p) {
 		hunters = new ArrayList<Player>();
 		runners = new ArrayList<Player>();
+		for (Player online : plugin.getServer().getOnlinePlayers()) {
+			hunters.add(online);
+		}
 		this.plugin = plugin;
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 		access(p, true);
 	}
 	
 	private void access(Player p, boolean safe) {
-		// Make sure lists are up-to-date
-		check();
-		
 		// Initialize GUI
 		Inventory inv = Bukkit.createInventory(p, 3 * ROW_LENGTH, "Manhunt");
 		
@@ -107,38 +107,6 @@ public class MMGUIMain implements Listener {
 		
 		// Open GUI
 		p.openInventory(inv);
-	}
-	
-	protected void check() {
-		// Fill runners if lists are empty
-		if (hunters.size() == 0 && runners.size() == 0) {
-			for (Player p : plugin.getServer().getOnlinePlayers()) {
-				hunters.add(p);
-			}
-			hunters.sort(null);
-		}
-		
-		// Add any other players that aren't online
-		if (hunters.size() + runners.size() != plugin.getServer().getOnlinePlayers().size()) {
-			for (Player p : plugin.getServer().getOnlinePlayers()) {
-				if (!(runners.contains(p) || hunters.contains(p))) {
-					hunters.add(p);
-				}
-				hunters.sort(null);
-			}
-		}
-		
-		// Check for invalid items in lists
-		for (Player hunter : hunters) {
-			if (!plugin.getServer().getOnlinePlayers().contains(hunter)) {
-				hunters.remove(hunter);
-			}
-		}
-		for (Player runner : runners) {
-			if (!plugin.getServer().getOnlinePlayers().contains(runner)) {
-				runners.remove(runner);
-			}
-		}
 	}
 	
 	// Event Handlers
