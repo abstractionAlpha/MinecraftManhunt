@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -111,6 +114,10 @@ public class MMGUIMain implements Listener {
 		p.openInventory(inv);
 	}
 	
+	private void inventoryClickSound(Player p, Location loc) {
+		p.playSound(loc, Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);
+	}
+	
 	// Event Handlers
 	
 	// InventoryClickEvent for main GUI
@@ -130,16 +137,20 @@ public class MMGUIMain implements Listener {
 		switch (lore.get(0)) {
 		case "Open Runners Window":
 			// TODO add runners window
+			inventoryClickSound((Player) ice.getWhoClicked(), ice.getWhoClicked().getLocation());
 			break;
 		case "Open Hunters Window":
 			// TODO add hunters window
+			inventoryClickSound((Player) ice.getWhoClicked(), ice.getWhoClicked().getLocation());
 			break;
 		case "Click to verify your selections":
 			access((Player) ice.getWhoClicked(), false);
+			inventoryClickSound((Player) ice.getWhoClicked(), ice.getWhoClicked().getLocation());
 			break;
 		case "Click to start":
 			// TODO add code to start game
 			// Probably method in main that will garbage collect this GUI
+			inventoryClickSound((Player) ice.getWhoClicked(), ice.getWhoClicked().getLocation());
 			break;
 		}
 	}
@@ -148,6 +159,7 @@ public class MMGUIMain implements Listener {
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent pje) {
 		hunters.add(pje.getPlayer());
+		hunters.sort(null);
 	}
 	
 	// Player Quit event
@@ -155,6 +167,41 @@ public class MMGUIMain implements Listener {
 	public void onPlayerQuit(PlayerQuitEvent pqe) {
 		runners.remove(pqe.getPlayer());
 		hunters.remove(pqe.getPlayer());
+	}
+	
+	private class MMGUIRunner implements Listener {
+		
+		public MMGUIRunner(Player p) {
+			access(p);
+		}
+		
+		private void access(Player p) {
+			
+		}
+		
+		@EventHandler
+		public void onInventoryClick(InventoryClickEvent ice) {
+			// Get inventory and clicked item
+			Inventory inv = ice.getClickedInventory();
+			if (ice.getView().getTitle().equals("Manhunt / Runners")) {
+				ice.setCancelled(true);
+			} else {
+				return;
+			}
+			ItemStack is = ice.getCurrentItem();
+			
+			if (is.getType().equals(Material.PLAYER_HEAD)) {
+				SkullMeta sm = (SkullMeta) is.getItemMeta();
+				Player player = (Player) sm.getOwningPlayer();
+				if (player.isOnline()) {
+					runners.remove(player);
+					hunters.add(player);
+					hunters.sort(null);
+				}
+				access((Player) ice.getWhoClicked());
+				inventoryClickSound((Player) ice.getWhoClicked(), ice.getWhoClicked().getLocation());
+			}
+		}
 	}
 
 }
