@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.abstractionalpha.minecraft.plugin</groupId>
   <artifactId>MinecraftManhunt</artifactId>
-  <version>0.1.3-SNAPSHOT</version>
+  <version>0.1.4-SNAPSHOT</version>
   <name>Minecraft Manhunt</name>
   <description>Minecraft Manhunt as inspired by Dream.</description>
   <build>
