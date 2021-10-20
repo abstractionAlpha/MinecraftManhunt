@@ -114,7 +114,7 @@ public class MMGUIMain implements Listener {
 	}
 	
 	private void inventoryClickSound(Player p, Location loc) {
-		p.playSound(loc, Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);
+		p.playSound(loc, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1f);
 	}
 	
 	// Event Handlers
