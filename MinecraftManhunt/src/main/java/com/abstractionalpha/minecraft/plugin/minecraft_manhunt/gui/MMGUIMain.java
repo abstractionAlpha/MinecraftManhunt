@@ -7,7 +7,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -124,7 +123,6 @@ public class MMGUIMain implements Listener {
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent ice) {
 		// Get inventory and clicked item
-		Inventory inv = ice.getClickedInventory();
 		if (ice.getView().getTitle().equals("Manhunt")) {
 			ice.setCancelled(true);
 		} else {
@@ -176,7 +174,7 @@ public class MMGUIMain implements Listener {
 		}
 		
 		private void access(Player p) {
-			Inventory inv = Bukkit.createInventory(p, runners.size() / ROW_LENGTH + 1, "Manhunt / Runners");
+			Inventory inv = Bukkit.createInventory(p, (runners.size() / ROW_LENGTH + 1) * ROW_LENGTH, "Manhunt / Runners");
 			for (int i = 0; i < runners.size(); i++) {
 				ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
 				SkullMeta meta = (SkullMeta) skull.getItemMeta();
@@ -191,7 +189,7 @@ public class MMGUIMain implements Listener {
 			ItemStack back = new ItemStack(Material.RED_TERRACOTTA);
 			ItemMeta meta = back.getItemMeta();
 			meta.setDisplayName("Back");
-			List<String> lore = meta.getLore();
+			List<String> lore = new ArrayList<String>();
 			lore.add("Click to go back to main menu.");
 			meta.setLore(lore);
 			back.setItemMeta(meta);
@@ -233,7 +231,7 @@ public class MMGUIMain implements Listener {
 		}
 		
 		private void access(Player p) {
-			Inventory inv = Bukkit.createInventory(p, hunters.size() / ROW_LENGTH + 1, "Manhunt / Hunters");
+			Inventory inv = Bukkit.createInventory(p, (hunters.size() / ROW_LENGTH + 1) * ROW_LENGTH, "Manhunt / Hunters");
 			for (int i = 0; i < hunters.size(); i++) {
 				ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
 				SkullMeta meta = (SkullMeta) skull.getItemMeta();
@@ -248,7 +246,7 @@ public class MMGUIMain implements Listener {
 			ItemStack back = new ItemStack(Material.RED_TERRACOTTA);
 			ItemMeta meta = back.getItemMeta();
 			meta.setDisplayName("Back");
-			List<String> lore = meta.getLore();
+			List<String> lore = new ArrayList<String>();
 			lore.add("Click to go back to main menu.");
 			meta.setLore(lore);
 			back.setItemMeta(meta);
