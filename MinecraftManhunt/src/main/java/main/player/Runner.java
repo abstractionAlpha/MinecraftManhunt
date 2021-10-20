@@ -29,6 +29,10 @@ public class Runner {
 		return locations.get(worldName);
 	}
 	
+	public Player getPlayer() {
+		return p;
+	}
+	
 	public boolean isAlive() {
 		return alive;
 	}
