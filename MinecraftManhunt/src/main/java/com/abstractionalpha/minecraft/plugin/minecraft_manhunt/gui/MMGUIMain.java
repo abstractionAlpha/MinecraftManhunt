@@ -2,7 +2,6 @@ package com.abstractionalpha.minecraft.plugin.minecraft_manhunt.gui;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -245,15 +244,7 @@ public class MMGUIMain implements Listener {
 					}
 					access((Player) ice.getWhoClicked());
 					inventoryClickSound((Player) ice.getWhoClicked(), ice.getWhoClicked().getLocation());
-					// TODO remove debug log
-					plugin.getServer().getLogger().log(Level.INFO, "Hunters:");
-					for (Player p : hunters) {
-						plugin.getServer().getLogger().log(Level.INFO, p.getDisplayName());
-					}
-					plugin.getServer().getLogger().log(Level.INFO, "Runners:");
-					for (Player p : runners) {
-						plugin.getServer().getLogger().log(Level.INFO, p.getDisplayName());
-					}
+					ice.getClickedInventory().removeItem(ice.getCurrentItem());
 				} else if (is.getType().equals(Material.RED_TERRACOTTA)) {
 					MMGUIMain.this.access((Player) ice.getWhoClicked(), true);
 					inventoryClickSound((Player) ice.getWhoClicked(), ice.getWhoClicked().getLocation());
@@ -316,15 +307,7 @@ public class MMGUIMain implements Listener {
 					}
 					access((Player) ice.getWhoClicked());
 					inventoryClickSound((Player) ice.getWhoClicked(), ice.getWhoClicked().getLocation());
-					// TODO remove debug log
-					plugin.getServer().getLogger().log(Level.INFO, "Hunters:");
-					for (Player p : hunters) {
-						plugin.getServer().getLogger().log(Level.INFO, p.getDisplayName());
-					}
-					plugin.getServer().getLogger().log(Level.INFO, "Runners:");
-					for (Player p : runners) {
-						plugin.getServer().getLogger().log(Level.INFO, p.getDisplayName());
-					}
+					ice.getClickedInventory().removeItem(ice.getCurrentItem());
 				} else if (is.getType().equals(Material.RED_TERRACOTTA)) {
 					MMGUIMain.this.access((Player) ice.getWhoClicked(), true);
 					inventoryClickSound((Player) ice.getWhoClicked(), ice.getWhoClicked().getLocation());
