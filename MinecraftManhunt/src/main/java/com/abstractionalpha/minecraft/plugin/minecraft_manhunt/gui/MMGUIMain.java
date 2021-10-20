@@ -234,28 +234,33 @@ public class MMGUIMain implements Listener {
 			}
 			ItemStack is = ice.getCurrentItem();
 			
-			if (is.getType().equals(Material.PLAYER_HEAD)) {
-				SkullMeta sm = (SkullMeta) is.getItemMeta();
-				Player player = (Player) sm.getOwningPlayer();
-				if (player.isOnline()) {
-					runners.remove(player);
-					hunters.add(player);
-					PlayerListSort(hunters);
+			try {
+				if (is.getType().equals(Material.PLAYER_HEAD)) {
+					SkullMeta sm = (SkullMeta) is.getItemMeta();
+					Player player = (Player) sm.getOwningPlayer();
+					if (player.isOnline()) {
+						runners.remove(player);
+						hunters.add(player);
+						PlayerListSort(hunters);
+					}
+					access((Player) ice.getWhoClicked());
+					inventoryClickSound((Player) ice.getWhoClicked(), ice.getWhoClicked().getLocation());
+					// TODO remove debug log
+					plugin.getServer().getLogger().log(Level.INFO, "Hunters:");
+					for (Player p : hunters) {
+						plugin.getServer().getLogger().log(Level.INFO, p.getDisplayName());
+					}
+					plugin.getServer().getLogger().log(Level.INFO, "Runners:");
+					for (Player p : runners) {
+						plugin.getServer().getLogger().log(Level.INFO, p.getDisplayName());
+					}
+				} else if (is.getType().equals(Material.RED_TERRACOTTA)) {
+					MMGUIMain.this.access((Player) ice.getWhoClicked(), true);
+					inventoryClickSound((Player) ice.getWhoClicked(), ice.getWhoClicked().getLocation());
 				}
-				access((Player) ice.getWhoClicked());
-				inventoryClickSound((Player) ice.getWhoClicked(), ice.getWhoClicked().getLocation());
-				// TODO remove debug log
-				plugin.getServer().getLogger().log(Level.INFO, "Hunters:");
-				for (Player p : hunters) {
-					plugin.getServer().getLogger().log(Level.INFO, p.getDisplayName());
-				}
-				plugin.getServer().getLogger().log(Level.INFO, "Runners:");
-				for (Player p : runners) {
-					plugin.getServer().getLogger().log(Level.INFO, p.getDisplayName());
-				}
-			} else if (is.getType().equals(Material.RED_TERRACOTTA)) {
-				MMGUIMain.this.access((Player) ice.getWhoClicked(), true);
-				inventoryClickSound((Player) ice.getWhoClicked(), ice.getWhoClicked().getLocation());
+			} catch (NullPointerException npe) {
+				// Will be thrown if clicked ItemStack is null, in which case do nothing
+				return;
 			}
 		}
 	}
@@ -300,28 +305,33 @@ public class MMGUIMain implements Listener {
 			}
 			ItemStack is = ice.getCurrentItem();
 			
-			if (is.getType().equals(Material.PLAYER_HEAD)) {
-				SkullMeta sm = (SkullMeta) is.getItemMeta();
-				Player player = (Player) sm.getOwningPlayer();
-				if (player.isOnline()) {
-					hunters.remove(player);
-					runners.add(player);
-					PlayerListSort(runners);
+			try {
+				if (is.getType().equals(Material.PLAYER_HEAD)) {
+					SkullMeta sm = (SkullMeta) is.getItemMeta();
+					Player player = (Player) sm.getOwningPlayer();
+					if (player.isOnline()) {
+						hunters.remove(player);
+						runners.add(player);
+						PlayerListSort(runners);
+					}
+					access((Player) ice.getWhoClicked());
+					inventoryClickSound((Player) ice.getWhoClicked(), ice.getWhoClicked().getLocation());
+					// TODO remove debug log
+					plugin.getServer().getLogger().log(Level.INFO, "Hunters:");
+					for (Player p : hunters) {
+						plugin.getServer().getLogger().log(Level.INFO, p.getDisplayName());
+					}
+					plugin.getServer().getLogger().log(Level.INFO, "Runners:");
+					for (Player p : runners) {
+						plugin.getServer().getLogger().log(Level.INFO, p.getDisplayName());
+					}
+				} else if (is.getType().equals(Material.RED_TERRACOTTA)) {
+					MMGUIMain.this.access((Player) ice.getWhoClicked(), true);
+					inventoryClickSound((Player) ice.getWhoClicked(), ice.getWhoClicked().getLocation());
 				}
-				access((Player) ice.getWhoClicked());
-				inventoryClickSound((Player) ice.getWhoClicked(), ice.getWhoClicked().getLocation());
-				// TODO remove debug log
-				plugin.getServer().getLogger().log(Level.INFO, "Hunters:");
-				for (Player p : hunters) {
-					plugin.getServer().getLogger().log(Level.INFO, p.getDisplayName());
-				}
-				plugin.getServer().getLogger().log(Level.INFO, "Runners:");
-				for (Player p : runners) {
-					plugin.getServer().getLogger().log(Level.INFO, p.getDisplayName());
-				}
-			} else if (is.getType().equals(Material.RED_TERRACOTTA)) {
-				MMGUIMain.this.access((Player) ice.getWhoClicked(), true);
-				inventoryClickSound((Player) ice.getWhoClicked(), ice.getWhoClicked().getLocation());
+			} catch (NullPointerException npe) {
+				// NPE thrown if IS clicked is null in which case do nothing
+				return;
 			}
 		}
 	}
