@@ -1,6 +1,6 @@
 name: MinecraftManhunt
 main: com.abstractionalpha.minecraft.plugin.minecraft_manhunt.MinecraftManhunt
-version: 0.1.4
+version: 0.1.6
 api-version: 1.17
 commands:
   manhunt:
