@@ -141,11 +141,9 @@ public class MMGUIMain implements Listener {
 		switch (lore.get(0)) {
 		case "Open Runners Window":
 			plugin.getServer().getPluginManager().registerEvents(new MMGUIRunner((Player) ice.getWhoClicked()), plugin);
-			inventoryClickSound((Player) ice.getWhoClicked(), ice.getWhoClicked().getLocation());
 			break;
 		case "Open Hunters Window":
 			plugin.getServer().getPluginManager().registerEvents(new MMGUIHunter((Player) ice.getWhoClicked()), plugin);
-			inventoryClickSound((Player) ice.getWhoClicked(), ice.getWhoClicked().getLocation());
 			break;
 		case "Click to verify your selections":
 			access((Player) ice.getWhoClicked(), false);
@@ -243,12 +241,11 @@ public class MMGUIMain implements Listener {
 						PlayerListSort(hunters);
 					}
 					access((Player) ice.getWhoClicked());
-					inventoryClickSound((Player) ice.getWhoClicked(), ice.getWhoClicked().getLocation());
 					ice.getClickedInventory().removeItem(ice.getCurrentItem());
 				} else if (is.getType().equals(Material.RED_TERRACOTTA)) {
 					MMGUIMain.this.access((Player) ice.getWhoClicked(), true);
-					inventoryClickSound((Player) ice.getWhoClicked(), ice.getWhoClicked().getLocation());
 				}
+				inventoryClickSound((Player) ice.getWhoClicked(), ice.getWhoClicked().getLocation());
 			} catch (NullPointerException npe) {
 				// Will be thrown if clicked ItemStack is null, in which case do nothing
 				return;
@@ -306,12 +303,11 @@ public class MMGUIMain implements Listener {
 						PlayerListSort(runners);
 					}
 					access((Player) ice.getWhoClicked());
-					inventoryClickSound((Player) ice.getWhoClicked(), ice.getWhoClicked().getLocation());
 					ice.getClickedInventory().removeItem(ice.getCurrentItem());
 				} else if (is.getType().equals(Material.RED_TERRACOTTA)) {
 					MMGUIMain.this.access((Player) ice.getWhoClicked(), true);
-					inventoryClickSound((Player) ice.getWhoClicked(), ice.getWhoClicked().getLocation());
 				}
+				inventoryClickSound((Player) ice.getWhoClicked(), ice.getWhoClicked().getLocation());
 			} catch (NullPointerException npe) {
 				// NPE thrown if IS clicked is null in which case do nothing
 				return;
