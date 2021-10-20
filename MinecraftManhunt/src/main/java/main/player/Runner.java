@@ -2,6 +2,7 @@ package main.player;
 
 import java.util.HashMap;
 
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -39,6 +40,7 @@ public class Runner {
 	
 	public void hasDied() {
 		alive = false;
+		p.setGameMode(GameMode.SPECTATOR);
 	}
 
 }
