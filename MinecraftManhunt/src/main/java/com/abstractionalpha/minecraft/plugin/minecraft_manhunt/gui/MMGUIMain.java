@@ -132,7 +132,13 @@ public class MMGUIMain implements Listener {
 		ItemStack is = ice.getCurrentItem();
 		
 		// Check if the clicked item matches any item lores
-		List<String> lore = is.getItemMeta().getLore();
+		List<String> lore;
+		try {
+			lore = is.getItemMeta().getLore();
+		} catch (NullPointerException npe) {
+			// If no lore, that means this wasn't a clickable... we can return
+			return;
+		}
 		switch (lore.get(0)) {
 		case "Open Runners Window":
 			plugin.getServer().getPluginManager().registerEvents(new MMGUIRunner((Player) ice.getWhoClicked()), plugin);
@@ -293,26 +299,26 @@ public class MMGUIMain implements Listener {
 				return;
 			}
 			ItemStack is = ice.getCurrentItem();
-			plugin.getLogger().log(Level.INFO, String.format("Reached line %d", 277));
 			
 			if (is.getType().equals(Material.PLAYER_HEAD)) {
-				plugin.getLogger().log(Level.INFO, String.format("Reached line %d", 280));
 				SkullMeta sm = (SkullMeta) is.getItemMeta();
-				plugin.getLogger().log(Level.INFO, String.format("Reached line %d", 282));
 				Player player = (Player) sm.getOwningPlayer();
-				plugin.getLogger().log(Level.INFO, String.format("Reached line %d", 284));
 				if (player.isOnline()) {
-					plugin.getLogger().log(Level.INFO, String.format("Reached line %d", 286));
 					hunters.remove(player);
-					plugin.getLogger().log(Level.INFO, String.format("Reached line %d", 288));
 					runners.add(player);
-					plugin.getLogger().log(Level.INFO, String.format("Reached line %d", 290));
 					PlayerListSort(runners);
-					plugin.getLogger().log(Level.INFO, String.format("Reached line %d", 292));
 				}
-				plugin.getLogger().log(Level.INFO, String.format("Reached line %d", 294));
 				access((Player) ice.getWhoClicked());
 				inventoryClickSound((Player) ice.getWhoClicked(), ice.getWhoClicked().getLocation());
+				// TODO remove debug log
+				plugin.getServer().getLogger().log(Level.INFO, "Hunters:");
+				for (Player p : hunters) {
+					plugin.getServer().getLogger().log(Level.INFO, p.getDisplayName());
+				}
+				plugin.getServer().getLogger().log(Level.INFO, "Runners:");
+				for (Player p : runners) {
+					plugin.getServer().getLogger().log(Level.INFO, p.getDisplayName());
+				}
 			} else if (is.getType().equals(Material.RED_TERRACOTTA)) {
 				MMGUIMain.this.access((Player) ice.getWhoClicked(), true);
 				inventoryClickSound((Player) ice.getWhoClicked(), ice.getWhoClicked().getLocation());
