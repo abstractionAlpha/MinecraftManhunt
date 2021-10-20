@@ -148,6 +148,7 @@ public class MMGUIMain implements Listener {
 		case "Click to start":
 			// TODO add code to start game
 			// Probably method in main that will garbage collect this GUI
+			ice.getView().close();
 			inventoryClickSound((Player) ice.getWhoClicked(), ice.getWhoClicked().getLocation());
 			break;
 		}
