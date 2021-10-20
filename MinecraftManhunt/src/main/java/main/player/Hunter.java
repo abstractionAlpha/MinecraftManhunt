@@ -37,5 +37,9 @@ public class Hunter {
 		
 		return is;
 	}
+	
+	public Player getPlayer() {
+		return p;
+	}
 
 }
