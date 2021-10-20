@@ -2,6 +2,7 @@ package com.abstractionalpha.minecraft.plugin.minecraft_manhunt.gui;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -158,7 +159,7 @@ public class MMGUIMain implements Listener {
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent pje) {
 		hunters.add(pje.getPlayer());
-		hunters.sort(null);
+		PlayerListSort(hunters);
 	}
 	
 	// Player Quit event
@@ -166,6 +167,25 @@ public class MMGUIMain implements Listener {
 	public void onPlayerQuit(PlayerQuitEvent pqe) {
 		runners.remove(pqe.getPlayer());
 		hunters.remove(pqe.getPlayer());
+	}
+	
+	/** 
+	 * I needed to write this method because Player objects aren't comparable... Makes sense. No natural sort for them sadly.
+	 * This method implements a simple QuickSort algorithm.
+	 * 
+	 * @see "https://www.geeksforgeeks.org/bubble-sort/"
+	 */
+	private void PlayerListSort(List<Player> list) {
+		int n = list.size();
+		for (int i = 0; i < n - 1; i++) {
+			for (int j = 0; j <  n - i - 1; j++) {
+				if (list.get(j).getDisplayName().compareTo(list.get(j + 1).getDisplayName()) < 0) {
+					Player temp = list.get(j);
+					list.set(j, list.get(j + 1));
+					list.set(j + 1, temp);
+				}
+			}
+		}
 	}
 	
 	private class MMGUIRunner implements Listener {
@@ -177,7 +197,7 @@ public class MMGUIMain implements Listener {
 		private void access(Player p) {
 			Inventory inv = Bukkit.createInventory(p, (runners.size() / ROW_LENGTH + 1) * ROW_LENGTH, "Manhunt / Runners");
 			for (int i = 0; i < runners.size(); i++) {
-				ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
+				ItemStack skull = new ItemStack(Material.PLAYER_HEAD, 1);
 				SkullMeta meta = (SkullMeta) skull.getItemMeta();
 				meta.setOwningPlayer(runners.get(i));
 				meta.setDisplayName(runners.get(i).getDisplayName());
@@ -214,10 +234,19 @@ public class MMGUIMain implements Listener {
 				if (player.isOnline()) {
 					runners.remove(player);
 					hunters.add(player);
-					hunters.sort(null);
+					PlayerListSort(hunters);
 				}
 				access((Player) ice.getWhoClicked());
 				inventoryClickSound((Player) ice.getWhoClicked(), ice.getWhoClicked().getLocation());
+				// TODO remove debug log
+				plugin.getServer().getLogger().log(Level.INFO, "Hunters:");
+				for (Player p : hunters) {
+					plugin.getServer().getLogger().log(Level.INFO, p.getDisplayName());
+				}
+				plugin.getServer().getLogger().log(Level.INFO, "Runners:");
+				for (Player p : runners) {
+					plugin.getServer().getLogger().log(Level.INFO, p.getDisplayName());
+				}
 			} else if (is.getType().equals(Material.RED_TERRACOTTA)) {
 				MMGUIMain.this.access((Player) ice.getWhoClicked(), true);
 				inventoryClickSound((Player) ice.getWhoClicked(), ice.getWhoClicked().getLocation());
@@ -234,7 +263,7 @@ public class MMGUIMain implements Listener {
 		private void access(Player p) {
 			Inventory inv = Bukkit.createInventory(p, (hunters.size() / ROW_LENGTH + 1) * ROW_LENGTH, "Manhunt / Hunters");
 			for (int i = 0; i < hunters.size(); i++) {
-				ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
+				ItemStack skull = new ItemStack(Material.PLAYER_HEAD, 1);
 				SkullMeta meta = (SkullMeta) skull.getItemMeta();
 				meta.setOwningPlayer(hunters.get(i));
 				meta.setDisplayName(hunters.get(i).getDisplayName());
@@ -264,15 +293,24 @@ public class MMGUIMain implements Listener {
 				return;
 			}
 			ItemStack is = ice.getCurrentItem();
+			plugin.getLogger().log(Level.INFO, String.format("Reached line %d", 277));
 			
 			if (is.getType().equals(Material.PLAYER_HEAD)) {
+				plugin.getLogger().log(Level.INFO, String.format("Reached line %d", 280));
 				SkullMeta sm = (SkullMeta) is.getItemMeta();
+				plugin.getLogger().log(Level.INFO, String.format("Reached line %d", 282));
 				Player player = (Player) sm.getOwningPlayer();
+				plugin.getLogger().log(Level.INFO, String.format("Reached line %d", 284));
 				if (player.isOnline()) {
+					plugin.getLogger().log(Level.INFO, String.format("Reached line %d", 286));
 					hunters.remove(player);
+					plugin.getLogger().log(Level.INFO, String.format("Reached line %d", 288));
 					runners.add(player);
-					runners.sort(null);
+					plugin.getLogger().log(Level.INFO, String.format("Reached line %d", 290));
+					PlayerListSort(runners);
+					plugin.getLogger().log(Level.INFO, String.format("Reached line %d", 292));
 				}
+				plugin.getLogger().log(Level.INFO, String.format("Reached line %d", 294));
 				access((Player) ice.getWhoClicked());
 				inventoryClickSound((Player) ice.getWhoClicked(), ice.getWhoClicked().getLocation());
 			} else if (is.getType().equals(Material.RED_TERRACOTTA)) {
